@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+
+.confirmAlert{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    top: calc(50% - 225px);
+    left: calc(50% - 150px);
+    z-index: 2;
+    border-radius: 5px;
+    box-shadow: 0 3px 5px -1px black;
+    transform: scale(0);
+    background-color: white;
+
+    @media(max-width: 300px){
+        width: 100%;
+        left: 0;
+    }
+}
+
+.confirmTitle{
+    font-size: 24px;
+    text-align: center;
+    margin: 20px 20px 20px 20px;
+}
+
+.confirmAlertContainer{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    border-top: 2px solid black;
+}
+
+.confirmButton{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 30%;
+    margin: 15px;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, .3);
+    color: rgba(0, 0, 0, .5);
+    font-size: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.3s;
+
+    &:hover{
+        border-bottom: 2px solid black;
+        color: black; 
+    }
+}
+
+.menu{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 50px;
+    z-index: 2;
+    background-color: white;
+    border-bottom: 2px solid black;
+}
+
+.playerContainer{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-left: 8%;
+    margin-right: 8%;
+    cursor: pointer;
+    width: 100px;
+}
+
+.playerName{
+    font-size: 25px;
+}
+
+.playerCount{
+    font-size: 15px;
+    margin-left: 5px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.playerLine{
+    position: absolute;
+    background-color: white;
+    height: 3px;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    transition: all 0.4s;
+    border: none;
+    display: flex;
+}
+
+.playerContainer:hover > .playerLine{
+    background-color: black;
+    width: 100%;
+}
+
+.settingsButton{
+    cursor: pointer;
+    position: absolute;
+    right: calc(1% + 150px);
+    background-color: white;
+    border: none;
+    font-size: 20px;
+    border-radius: 50%;
+
+    &:hover{
+        animation: settingsButton 2s infinite linear;
+    }
+}
+
+@keyframes settingsButton{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+.sortButton{
+    cursor: pointer;
+    position: absolute;
+    right: calc(1% + 110px);
+    background-color: white;
+    border: none;
+    font-size: 20px;
+    transition: all 0.3s;
+
+    &:hover{
+        transform: scale(1.4) rotate(7deg);
+    }
+}
+
+.sortMenu{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    right: calc(1% + 50px);
+    background-color: white;
+    box-shadow: 0 3px 5px -1px black;
+    border-radius: 5px;
+    top: 55px;
+    width: 150px;
+}
+
+.sortItem{
+    cursor: pointer;
+    font-family: 'Josefin Sans', sans-serif;
+    border: none;
+    background-color: white;
+    font-size: 17px;
+    transition: all 0.3s;
+    height: 30px;
+}
+
+.pageChange{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    right: 1%;
+}
+
+.pageCount{
+    cursor: default;
+    font-size: 20px;
+    font-family: 'Josefin Sans', sans-serif;
+    margin-bottom: -4px;
+}
+
+.pageButton{
+    display: flex;
+    font-size: 30px;
+    background-color: transparent;
+    border-radius: 50%;
+    border: none;
+    color: black;
+    cursor: pointer;
+
+    &:hover{
+        animation: pageButton 0.3s forwards;
+    }
+}
+
+@keyframes pageButton{
+    0%{
+        color: black;
+        font-size: 30px;
+    }
+    100%{
+        color: rgb(44, 102, 209);
+        font-size: 40px;
+    }
+}
+
+.videoContainer{
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.homeButton{
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    font-size: 20px;
+}

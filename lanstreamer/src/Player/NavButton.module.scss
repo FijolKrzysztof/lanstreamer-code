@@ -1,0 +1,44 @@
+.navButton{
+    display: flex;
+    color: black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    margin: 1px;
+    height: 100%;
+}
+
+.button{
+    font-size: 25px;
+    padding: 1rem 2rem 1.15rem;
+    cursor: pointer;
+    color: black;
+    white-space: nowrap;
+
+    &:hover{
+        background-image: url('https://scottyzen.sirv.com/Images/v/button.png');
+        background-size: 100% 100%;
+        color: #27262c;
+        animation: spring 300ms ease-out;
+        text-shadow: 0 -1px 0 #ef816c;
+        font-weight: bold;
+    }
+}
+
+@keyframes spring {
+    15% {
+        -webkit-transform-origin: center center;
+        -webkit-transform: scale(1.2, 1.1);
+    }
+    40% {
+        -webkit-transform-origin: center center;
+        -webkit-transform: scale(0.95, 0.95);
+    }
+    75% {
+        -webkit-transform-origin: center center;
+        -webkit-transform: scale(1.05, 1);
+    }
+    100% {
+        -webkit-transform-origin: center center;
+        -webkit-transform: scale(1, 1);
+    }
+}

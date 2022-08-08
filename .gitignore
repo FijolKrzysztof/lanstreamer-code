@@ -1,0 +1,7 @@
+lanstreamer/node_modules
+lanstreamer/build
+lanstreamer-packages
+lanstreamerAPI/node_modules
+lanstreamerAPI/build
+electron/node_modules
+electron/build

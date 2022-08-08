@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&display=swap');
+
+.passwordContainer{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    right: 50px;
+    bottom: -65px;
+    background-color: rgb(255, 255, 255);
+    width: 200px;
+    z-index: 1;
+    height: 60px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: none;
+    box-shadow: 0 0 5px -1px black;
+    transition: all 0.5s;
+}
+
+.passwordInput{
+    margin-top: 10px;
+    font-size: 16px;
+    width: 80%;
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: transparent;
+    color: white;
+    transition: all 0.2s;
+
+    &:focus{
+        outline: none;
+        color: black;
+    }
+}
+
+.passwordText{
+    margin-left: -49%;
+    color: rgba(0, 0, 0, .6);
+    transition: all 0.4s;
+    margin-top: -21px;
+    pointer-events: none;
+}
+
+.passwordInput:focus + .passwordText{
+    margin-top: 2px;
+}
+
+.confirm{
+    position: absolute;
+    right: 25px;
+    bottom: 7px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover{
+        transform: rotate(360deg);
+    }
+}
+
+.developmentMode{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 50px;
+    z-index: 1;
+    background-color: white;
+    height: 40px;
+    width: 150px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: 0 0 5px -1px black;
+}
+
+.background{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+    height: 100vh;
+    min-height: 500px;
+    width: 100%;
+    left: 0;
+    top: 0;
+    box-shadow: 0 10px 40px 1px black;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0 50%;
+	}
+}
+
+.imageContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.image{
+    margin: 0 1% 0 1%;
+    opacity: 0.5;
+    font-size: 100px;
+    @media (min-width: 576px) {
+        font-size: 130px;
+    }
+    @media (min-width: 768px) {
+        font-size: 170px;
+    }
+    @media (min-width: 992px) {
+        font-size: 210px;
+    }
+    @media (min-width: 1200px) {
+        font-size: 270px;
+    }
+}
+
+.text{
+    font-family: 'Paytone One', sans-serif;
+    text-align: center;
+    margin: 1%;
+    font-size: 20px;
+    @media (min-width: 576px) {
+        font-size: 25px;
+    }
+    @media (min-width: 768px) {
+        font-size: 33px;
+    }
+    @media (min-width: 992px) {
+        font-size: 40px;
+    }
+    @media (min-width: 1200px) {
+        font-size: 50px;
+    }
+}
+
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5%;
+    position: absolute;
+    bottom: 2%;
+}
+
+.margin{
+    width: 5px;
+}
+
+.button{
+    cursor: pointer;
+    font-size: 20px;
+    border: 2px solid rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, .5);
+    width: 200px;
+    height: 50px;
+    max-width: 45%;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: relative;
+    -webkit-transition-property: color;
+    transition-property: color;
+    -webkit-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+
+    &::before{
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgb(59, 59, 59);
+        -webkit-transform: scaleY(0);
+        transform: scaleY(0);
+        -webkit-transform-origin: 50% 0;
+        transform-origin: 50% 0;
+        -webkit-transition-property: transform;
+        transition-property: transform;
+        -webkit-transition-duration: 0.5s;
+        transition-duration: 0.5s;
+        -webkit-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+    }
+
+    &:hover, &:active, &:focus{
+        color: white;
+    }
+
+    &:hover::before, &:focus::before, &:active::before{
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
+        -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+        transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+    }
+}
+
+.textArea{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    left: 0;
+    margin-top: calc(100vh + 200px);
+    width: 100%;
+    background-color: white;
+}
+
+.textContainer{
+    margin: 0 20px 70px 20px;
+    border-radius: 5px;
+    width: 300px;
+    box-shadow: 0 0 40px 1px black;
+    max-width: 95%;
+}
+
+.header{
+    font-size: 40px;
+    margin: 40px 0 20px 0;
+    text-align: center;
+    font-family: 'Stint Ultra Condensed', cursive;
+}
+
+.headerLink{
+    font-size: 40px;
+    margin: 40px 0 20px 0;
+    text-align: center;
+    font-family: 'Stint Ultra Condensed', cursive;
+    text-decoration: none;
+    color: black;
+    transition: all .3s;
+
+    &:hover{
+        color: rgba(black, .3);
+    }
+}
+
+.infoText{
+    text-align: justify;
+    margin: 0 40px 40px 40px;
+}

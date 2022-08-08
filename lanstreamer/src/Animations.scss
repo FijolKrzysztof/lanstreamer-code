@@ -1,0 +1,57 @@
+@keyframes confirmAlert{
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    60% {
+        transform: scale(0.97);
+    }
+    75% {
+        transform: scale(0.93);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes playerCountAnimation{
+    0%{
+        font-size: 50px;
+        color: red;
+    }
+    10%{
+        color: none;
+    }
+    100%{
+        font-size: 15px;
+    }
+}
+
+@keyframes menuFoldButton{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(45deg);
+    }
+}
+
+@keyframes foldMenu{
+    0%{
+        height: 70px;
+    }
+    100%{
+        height: 210px;
+    }
+}
+
+@keyframes createPreviewButton{
+    0%{
+        left: 40px;
+    }
+    100%{
+        left: 70px;
+    }
+}

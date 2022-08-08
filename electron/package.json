@@ -1,0 +1,38 @@
+{
+  "name": "lanstreamer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "nodemon": "nodemon Server/index.js",
+    "electron": "electron .",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=../lanstreamer-packages --extra-resource='./Server/Files'",
+    "package-win": "mv ./Server/Files/Ffmpeg/Linux ../ffmpeg/Linux && electron-packager . lanstreamer --overwrite --asar --platform=win32 --arch=ia32 --prune=true --out=../lanstreamer-packages --extra-resource='./Server/Files' --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Lanstreamer\" --icon='./Server/Files/Icons/icon.ico' && mv ../ffmpeg/Linux ./Server/Files/Ffmpeg/Linux",
+    "package-linux": "mv ./Server/Files/Ffmpeg/Windows ../ffmpeg/Windows && electron-packager . lanstreamer --overwrite --asar --platform=linux --prune=true --out=../lanstreamer-packages --extra-resource='./Server/Files' && mv ../ffmpeg/Windows ./Server/Files/Ffmpeg/Windows"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^13.2.1",
+    "electron-packager": "^15.3.0",
+    "nodemon": "^2.0.12"
+  },
+  "dependencies": {
+    "axios": "^0.23.0",
+    "cors": "^2.8.5",
+    "electron-is-dev": "^2.0.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "express": "^4.17.1",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "^0.0.1-security",
+    "ip": "^1.1.5",
+    "is-electron": "^2.2.0",
+    "kill-port": "^1.6.1",
+    "nedb": "^1.8.0",
+    "node-machine-id": "^1.1.12",
+    "open": "^8.2.1",
+    "os": "^0.1.2",
+    "path": "^0.12.7"
+  }
+}

@@ -1,0 +1,401 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+.navBar{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    z-index: 1;
+    background-color: white;
+    box-shadow: 0 0 40px 1px black;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+        height: 0px;
+    }
+}
+
+.navButton{
+    @media (hover: hover) and (pointer: fine) {
+        display: block;
+    }
+    display: none;
+    position: fixed;
+    cursor: pointer;
+    height: 60px;
+    top: 0;
+    z-index: 2;
+    width: 60px;
+    box-shadow: 0 0 50px 1px black;
+    font-size: 48px;
+    border-radius: 5px;
+    border: none;
+    background-color: white;
+
+    &:hover{
+        animation: hvr-pop 0.3s linear forwards;
+    }
+}
+
+@keyframes hvr-pop{
+    50%{
+        color: rgb(44, 102, 209);
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+    }
+    100%{
+        color: rgb(44, 102, 209)
+    }
+}
+
+#backButton{
+    left: 0;
+}
+
+#forwardButton{
+    right: 0;
+}
+
+.margin{
+    @media (hover: hover) and (pointer: fine) {
+        display: block;
+    }
+    display: none;
+    padding: 0 30px 0;
+}
+
+.createPreviewButton{
+    cursor: pointer;
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    top: 115px;
+    left: 40px;
+    height: 140px;
+    width: 40px;
+    z-index: 1;
+    box-shadow: 0 0 40px 1px black;
+    border: none;
+    background-color: white;
+    transition: all 0.2s;
+}
+
+.createPreviewText{
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.createPreviewPercent{
+    position: absolute;
+    bottom: 0;
+    margin-left: 10px;
+}
+
+.menu{
+    position: fixed;
+    top: 80px;
+    left: 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+    background-color: white;
+    box-shadow: -5px 0 40px 1px black;
+    z-index: 2;
+}
+
+#menuFoldButton{
+    display: block;
+    transform: all 0.3s;
+
+    &:hover{
+        animation: none;
+        color: rgb(44, 102, 209);
+    }
+}
+
+.menuButton{
+    cursor: pointer;
+    display: none;
+    font-size: 35px;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+    border: none;
+    background-color: transparent;
+    transition: all 0.3s;
+
+    &:hover{
+        animation: hvr-buzz-out 0.75s forwards linear;
+    }
+}
+
+@keyframes hvr-buzz-out {
+    10% {
+        -webkit-transform: translateX(3px) rotate(2deg);
+        transform: translateX(3px) rotate(2deg);
+    }
+    20% {
+        -webkit-transform: translateX(-3px) rotate(-2deg);
+        transform: translateX(-3px) rotate(-2deg);
+    }
+    30% {
+        -webkit-transform: translateX(3px) rotate(2deg);
+        transform: translateX(3px) rotate(2deg);
+    }
+    40% {
+        -webkit-transform: translateX(-3px) rotate(-2deg);
+        transform: translateX(-3px) rotate(-2deg);
+    }
+    50% {
+        -webkit-transform: translateX(2px) rotate(1deg);
+        transform: translateX(2px) rotate(1deg);
+    }
+    60% {
+        -webkit-transform: translateX(-2px) rotate(-1deg);
+        transform: translateX(-2px) rotate(-1deg);
+    }
+    70% {
+        -webkit-transform: translateX(2px) rotate(1deg);
+        transform: translateX(2px) rotate(1deg);
+    }
+    80% {
+        -webkit-transform: translateX(-2px) rotate(-1deg);
+        transform: translateX(-2px) rotate(-1deg);
+    }
+    90% {
+        -webkit-transform: translateX(1px) rotate(0);
+        transform: translateX(1px) rotate(0);
+    }
+    100% {
+        -webkit-transform: translateX(-1px) rotate(0);
+        transform: translateX(-1px) rotate(0);
+    }
+}
+
+.container{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 60px);
+    margin-top: 60px;
+}
+
+.playerContainer{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    height: calc(95vw * 0.5625);
+    max-width: calc((95vh - 90px) / 0.5625);
+    max-height: calc(95vh - 90px);
+    min-width: 70vw;
+    min-height: calc(70vw * 0.5625);
+    box-shadow: 0 0 40px 1px black;
+    background-color: black;
+}
+
+.player{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.info{
+    position: absolute;
+    color: white;
+    text-transform: uppercase;
+    font-size: 3vw;
+    letter-spacing: 10px;
+}
+
+.controls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    bottom: -1px;
+    left: 0px;
+    background-color: white;
+    transition: all 0.5s;
+}
+
+.slider{
+    -webkit-appearance: none;
+    cursor: pointer;
+    flex-grow: 1;
+    background: linear-gradient(90deg, rgb(104, 130, 177) 0%, rgb(204, 204, 204) 0%);
+    -webkit-transition: none;
+    transition: none;
+    transition: opacity .2s;
+    height: 20px;
+    border-radius: 20px;
+
+    &::-webkit-slider-thumb{
+        -webkit-appearance: none;
+        width: 1px;
+        height: 20px;
+        border-radius: 5px;
+        background-color: rgb(54, 54, 54);
+        cursor: pointer;
+    }
+
+    &:focus{
+        outline: none;
+    }
+}
+
+.time{
+    margin-bottom: -3px;
+    font-size: 20px;
+    width: 100px;
+    text-align: center;
+    font-family: 'Bebas Neue', cursive;
+}
+
+.controlsButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    background: none;
+    border: none;
+
+    &:focus{
+        outline: none;
+    }
+}
+
+.volumeContainer{
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    bottom: 50px;
+    right: 50px;
+    background-color: white;
+    width: 50px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+.volumeText{
+    color: black;
+    font-family: 'Bebas Neue', cursive;
+}
+
+.volumeButton{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    font-size: 20px;
+    height: 30px;
+    width: 30px;
+    background-color: white;
+    border: none;
+
+    &:hover{
+        font-size: 30px;
+    }
+}
+
+.volumeUp{
+    margin-bottom: -10px;
+}
+
+.volumeDown{
+    margin-top: -10px;
+}
+
+.volumeButton:hover > .volumeUp{
+    transition: all 0.1s;
+    margin-bottom: 0px;
+    color: rgb(44, 102, 209);
+}
+
+.volumeButton:hover > .volumeDown{
+    transition: all 0.1s;
+    margin-top: 0px;
+    color: rgb(44, 102, 209);
+}
+
+.playerButtons{
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, .1);
+}
+
+.playButton{
+    font-size: 10vw;
+    transition: all 0.5s;
+    margin: 0 50% 0 50%;
+}
+
+.faFastButton{
+    font-size: 10vw;
+    margin-bottom: 25px;
+    transition: all 0.5s;
+}
+
+.preview{
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    height: calc(200px * 0.5625);
+    top: -140px;
+    border: 3px solid white;
+    border-radius: 5px;
+    background-color: black;
+}
+
+.previewPlayer{
+    width: 100%;
+    height: 100%;
+}
+
+.previewText{
+    color: white;
+    font-size: 15px;
+    margin-top: -20px;
+    z-index: 1;
+}
+
+.previewCover{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.6)
+    )
+}
