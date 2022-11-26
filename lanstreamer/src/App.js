@@ -4,15 +4,25 @@ import Videos from './Videos';
 import Player from './Player';
 import Home from './Home';
 import Settings from './Settings';
+import Login from './Login';
 import { Action } from './Store';
 import { connect } from 'react-redux';
-import { Router, Switch, Route } from 'react-router-dom';
+import { Route, Router, Switch } from 'react-router-dom';
 import History from './History';
 import './App.scss';
 import cookie from 'js-cookie';
+import { gapi } from "gapi-script";
 
 class App extends Component {
   componentDidMount = () => {
+    const initClient = () => {
+      gapi.client.init({
+        clientId: window.googleClientId,
+        scope: ''
+      });
+    };
+    gapi.load('client:auth2', initClient);
+
     let customSort = cookie.get('customSort');
     let playersNumber = cookie.get('playersNumber');
     let previewParts = cookie.get('previewParts');
@@ -101,6 +111,7 @@ class App extends Component {
             <Route path='/videos' component={ Videos } exact />
             <Route path='/player' component={ Player } exact />
             <Route path='/settings' component={ Settings } exact />
+            <Route path='/google-login' component={ Login } exact />
           </Switch>
         </Router>
       </div>

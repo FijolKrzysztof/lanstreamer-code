@@ -6,16 +6,16 @@ const axios = require('axios');
 const { machineId } = require('node-machine-id');
 const os = require('os');
 
-let version = '1.0';
+let version = '1';
 let port = 5555;
-let website = 'https://lanstreamer.com/login/';
-let serverAddress = 'https://lanstreamer.com/';
+let website = 'https://lanstreamer.com/';
+let serverAddress = 'https://lanstreamer.com/api/';
 
 let fullInfo = `Open the program on another device:\n
-1. Connect the device to the same network.
-2. Open the device browser.
-3. Go to: "${ip.address()}:${port}".
-4. Click "GET STARTED" button.`
+1. Start Lanstreamer.
+2. Connect the device to the same network.
+3. Open the device browser.
+4. Go to: "${ip.address()}:${port}".`
 
 let timeout;
 
@@ -73,6 +73,11 @@ if(localStorage.userPassword !== undefined){
     document.getElementById('passwordInput').value = localStorage.userPassword;
 }
 
+for(let i = 0; i < 50; i++){
+    document.getElementsByClassName('margin')[0].innerText += '.|..|..|..|..|.'
+    document.getElementsByClassName('margin')[1].innerText += '.|..|..|..|..|.';
+}
+
 function start(){
     if(localStorage.offline > 0){
         localStorage.offline --;
@@ -81,8 +86,28 @@ function start(){
             open('http://localhost:' + port);
         })
     } else {
-        document.getElementById('app').style.display = 'none';
-        document.getElementById('login').style.display = 'flex';
+        const urlId = Math.floor(1000000000 + Math.random() * 9000000000);
+        open(website + 'google-authentication/' + urlId);
+        const interval = setInterval(() => {
+            axios.get(serverAddress + '/main/app/access/' + urlId + '/' + version)
+                .then(response => {
+                    if (+response) {
+                        animateText('Logged in!')
+                        localStorage.offline = +response;
+                        ipcRenderer.send('open');
+                        setTimeout(() => {
+                            open('http://localhost:' + port);
+                        })
+                        clearInterval(interval);
+                    } else {
+                        animateText('Cannot login!')
+                    }
+                })
+                .catch((error) => animateText(error?.message ?? 'Server error!'))
+        }, 1000)
+        setTimeout(() => {
+            clearInterval(interval);
+        }, 60000)
     }
 }
 
@@ -109,43 +134,6 @@ function closeMigrationInfo(){
 function home(){
     document.getElementById('login').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
-}
-
-async function confirm(){
-    let login = document.getElementById('loginInput').value;
-    let password = document.getElementById('passwordInput').value;
-    let id = await machineId();
-    if(login === '' || password === '') animateText('Login or password field empty.')
-    else {
-        localStorage.userLogin = login;
-        localStorage.userPassword = password;
-        axios.default.get(serverAddress + 'player/' + login + '/' + password + '/' + id + '/' + version)
-        .then((message) => {
-            if(message.data.access === true){
-                animateText('Success.');
-                setTimeout(() => {
-                    open('http://localhost:' + port);
-                    ipcRenderer.send('open');
-                }, 500)
-                localStorage.offline = parseInt(message.data.offline);
-            } else {
-                if(message.data === 'Unrecognised device.'){
-                    animateText(message.data);
-                    setTimeout(() => {
-                        animateText('Reset device on the website.')
-                    }, 2000)
-                } else if(message.data === 'Outdated Version.'){
-                    animateText(message.data);
-                    setTimeout(() => {
-                        animateText('Download latest one.')
-                    }, 2000)
-                } else {
-                    animateText(message.data);
-                }
-            }
-        })
-        .catch(() => animateText('Server error.'))
-    }
 }
 
 function animateText(text, count = 0){

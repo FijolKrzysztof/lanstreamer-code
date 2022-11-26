@@ -1,11 +1,12 @@
 const electron = require('electron');
 const path = require('path');
 const os = require('os');
+const open = require('open');
 require('electron-reload')(__dirname);
 
 const{ app, BrowserWindow, ipcMain } = electron;
 
-const height = os.platform() === 'win32' ? 220 : 190;
+const height = os.platform() === 'win32' ? 310 : 280;
 
 ipcMain.on('port', (event, port) => {
     global.port = port;
@@ -22,7 +23,7 @@ ipcMain.on('open', () => {
 app.on('ready', () => {
     let mainWindow = new BrowserWindow({
         show: false,
-        width: 400,
+        width: 500,
         height: height,
         autoHideMenuBar: true,
         resizable: false,

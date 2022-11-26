@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
 import style from './index.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilm, faVideo, faCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+    faFilm,
+    faVideo,
+    faCheck,
+    faDownload,
+    faArrowRightToBracket,
+    faArrowRightFromBracket
+} from '@fortawesome/free-solid-svg-icons';
 import History from '../History';
 import axios from 'axios';
 import { Action } from '../Store';
 import { connect } from 'react-redux';
 import cookie from 'js-cookie';
-
-let loginLink = window.demo === true ? '/login/' : 'https://lanstreamer.com/login/';
-
-let demo = `\
-The demo version allows you to test the basic functionality of the program with some 
-limitations of functions available only after downloading the program to your computer.`;
-let getStarted1 = `\
-To start using the program, go `;
-let getStarted2 = `\
-, then register ( the program will not work without registration ) and download the program 
-to your computer. After unpacking, find the executable file for your operating system and run the program.`;
-let about = `\
-The application allows you to play local media files offline, as well as stream movies to other devices 
-connected to the local network. In the program, you can preview random frames from the movie before watching, 
-and also arrange movies based on: number of views, attention, rating, length, date of adding the movie, name and more.`;
+import GoogleLogin, { GoogleLogout } from "react-google-login";
 
 class Home extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state = { password: null }
+        this.state = {
+            password: null,
+            loggedIn: false,
+        }
     }
 
     clearRedux = () => {
@@ -37,7 +33,7 @@ class Home extends Component {
 
     demo = () => {
         this.clearRedux();
-        if(window.demo === true){
+        if (window.demo === true) {
             let address = window.server;
             this.props.dispatch(Action('PLAYERS NUMBER UPDATE', 3));
             window.previewParts = 1;
@@ -45,30 +41,30 @@ class Home extends Component {
             History.push('/videos');
             this.props.getVideos(address);
         } else {
-            document.getElementById('demo').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('account').scrollIntoView({behavior: 'smooth', block: 'center'});
         }
     }
 
     checkConnection = () => {
-        if(window.demo === false){
+        if (window.demo === false) {
             this.clearRedux();
             let address = window.localhost;
             axios.post(address + 'checkConnection')
-            .then((message) => {
-                let password = message.data.password;
-                if(password === null){
-                    this.getStarted();
-                } else {
-                    this.setState({ password: password }, () => {
-                        document.getElementById('passwordContainer').style.bottom = 0;
-                    })
-                }
-            })
-            .catch(() => {
-                document.getElementById('getStarted').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            })
+                .then((message) => {
+                    let password = message.data.password;
+                    if (password === null) {
+                        this.getStarted();
+                    } else {
+                        this.setState({password: password}, () => {
+                            document.getElementById('passwordContainer').style.bottom = 0;
+                        })
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('download').scrollIntoView({behavior: 'smooth', block: 'center'});
+                })
         } else {
-            document.getElementById('getStarted').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('download').scrollIntoView({behavior: 'smooth', block: 'center'});
         }
     }
 
@@ -77,15 +73,15 @@ class Home extends Component {
         let playersNumber = cookie.get('playersNumber');
         let previewParts = cookie.get('previewParts');
         let previewClipDuration = cookie.get('previewClipDuration')
-        if(playersNumber !== undefined) this.props.dispatch(Action('PLAYERS NUMBER UPDATE', parseInt(playersNumber)));
-        if(previewParts !== undefined) window.previewParts = previewParts;
-        if(previewClipDuration !== undefined) window.previewClipDuration = previewClipDuration;
+        if (playersNumber !== undefined) this.props.dispatch(Action('PLAYERS NUMBER UPDATE', parseInt(playersNumber)));
+        if (previewParts !== undefined) window.previewParts = previewParts;
+        if (previewClipDuration !== undefined) window.previewClipDuration = previewClipDuration;
         History.push('/videos');
         this.props.getVideos(address);
     }
 
     confirmPassword = (e) => {
-        if(e.key === 'Enter'){
+        if (e.key === 'Enter') {
             this.checkPassword();
         }
     }
@@ -93,7 +89,7 @@ class Home extends Component {
     checkPassword = () => {
         document.getElementById('passwordContainer').style.bottom = '-65px'
         let password = document.getElementById('password').value;
-        if(password === this.state.password){
+        if (password === this.state.password) {
             setTimeout(() => {
                 this.getStarted();
             }, 500)
@@ -104,43 +100,175 @@ class Home extends Component {
         }
     }
 
-    render(){
-        return(
+    downlaod = (type) => {
+        document.getElementsByClassName(style.downloadButton)[0].disabled = true;
+        document.getElementsByClassName(style.downloadButton)[1].disabled = true;
+        document.getElementsByClassName(style.downloadButton)[2].disabled = true;
+        document.body.style.cursor = 'wait';
+        axios.get(window.serverAddress + 'download/' + type, {responseType: 'blob'})
+            .then((file) => {
+                const link = document.createElement('a');
+                link.style.display = 'none';
+                link.href = URL.createObjectURL(new File([file.data], '.zip', {type: 'application/zip'}));
+                link.download = 'lanstreamer';
+
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.style.cursor = 'auto';
+                document.getElementsByClassName(style.downloadButton)[0].disabled = false;
+                document.getElementsByClassName(style.downloadButton)[1].disabled = false;
+                document.getElementsByClassName(style.downloadButton)[2].disabled = false;
+
+                setTimeout(() => {
+                    URL.revokeObjectURL(link.href);
+                    link.parentNode.removeChild(link);
+                });
+            })
+            .catch(() => {
+                document.body.style.cursor = 'auto';
+                document.getElementsByClassName(style.downloadButton)[0].disabled = false;
+                document.getElementsByClassName(style.downloadButton)[1].disabled = false;
+                document.getElementsByClassName(style.downloadButton)[2].disabled = false;
+            })
+    }
+
+    onLogin = (res) => {
+        this.setState({loggedIn: true})
+        console.log(res.profileObj)
+    }
+
+    onLoginFailure = (res) => {
+        console.log(res.details);
+        document.getElementById('warningAlert').style.left = '0px';
+        document.getElementById('alertText').innerText = 'LOGIN FAILED';
+    }
+
+    onLogout = () => {
+        this.setState({loggedIn: false});
+    }
+
+    download = (type) => {
+        document.getElementsByClassName(style.downloadButton)[0].disabled = true;
+        document.getElementsByClassName(style.downloadButton)[1].disabled = true;
+        document.getElementsByClassName(style.downloadButton)[2].disabled = true;
+        document.body.style.cursor = 'wait';
+        axios.get(window.serverAddress + 'download/' + type, { responseType: 'blob' })
+            .then((file) => {
+                const link = document.createElement('a');
+                link.style.display = 'none';
+                link.href = URL.createObjectURL(new File([file.data], '.zip', { type: 'application/zip' }));
+                link.download = 'lanstreamer';
+
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.style.cursor = 'auto';
+                document.getElementsByClassName(style.downloadButton)[0].disabled = false;
+                document.getElementsByClassName(style.downloadButton)[1].disabled = false;
+                document.getElementsByClassName(style.downloadButton)[2].disabled = false;
+
+                setTimeout(() => {
+                    URL.revokeObjectURL(link.href);
+                    link.parentNode.removeChild(link);
+                });
+            })
+            .catch(() => {
+                document.body.style.cursor = 'auto';
+                document.getElementsByClassName(style.downloadButton)[0].disabled = false;
+                document.getElementsByClassName(style.downloadButton)[1].disabled = false;
+                document.getElementsByClassName(style.downloadButton)[2].disabled = false;
+                document.getElementById('warningAlert').style.left = '0px';
+                document.getElementById('alertText').innerText = 'SERVER ERROR';
+            })
+    }
+
+    render() {
+        return (
             <div>
-                <div className={ style.passwordContainer } id='passwordContainer'>
-                    <input className={ style.passwordInput } type='password' id='password' onKeyDown={(e) => this.confirmPassword(e)} />
-                    <div className={ style.passwordText }>Password</div>
-                    <FontAwesomeIcon className={ style.confirm } icon={ faCheck } onClick={ this.checkPassword } />
+                <div className={style.passwordContainer} id='passwordContainer'>
+                    <input className={style.passwordInput} type='password' id='password'
+                           onKeyDown={(e) => this.confirmPassword(e)}/>
+                    <div className={style.passwordText}>Password</div>
+                    <FontAwesomeIcon className={style.confirm} icon={faCheck} onClick={this.checkPassword}/>
                 </div>
-                { window.developmentMode === true ?
-                    <div className={ style.developmentMode }>Development Mode</div> :
+                {window.developmentMode === true ?
+                    <div className={style.developmentMode}>Development Mode</div> :
                     null
                 }
-                <div className={ style.background }>
-                    <div className={ style.imageContainer }>
-                        <FontAwesomeIcon className={ style.image } icon={ faFilm } />
-                        <FontAwesomeIcon className={ style.image } icon={ faVideo } />
+                <div className={style.background}>
+                    <div className={style.imageContainer}>
+                        <FontAwesomeIcon className={style.image} icon={faFilm}/>
+                        <FontAwesomeIcon className={style.image} icon={faVideo}/>
                     </div>
-                    <div className={ style.text }>Sort, preview and play your offline videos</div>
-                    <div className={ style.buttonContainer }>
-                        <button className={ style.button } onClick={ this.demo }>DEMO</button>
-                        <div className={ style.margin }></div>
-                        <button className={ style.button } onClick={ this.checkConnection }>{ window.demo ? 'DOWNLOAD' : 'GET STARTED' }</button>
+                    <div className={style.text}>Sort, preview and play your offline videos</div>
+                    <div className={style.buttonContainer}>
+                        <button className={style.button} onClick={this.demo}>DEMO</button>
+                        <div className={style.margin}></div>
+                        <button className={style.button}
+                                onClick={this.checkConnection}>{window.demo ? 'DOWNLOAD' : 'GET STARTED'}</button>
                     </div>
                 </div>
-                <div className={ style.textArea }>
-                    <div id='demo' className={ style.textContainer }>
-                        <div className={ style.header }>DEMO</div>
-                        <p className={ style.infoText }>{ demo }</p>
-                    </div>
-                    <div id='getStarted' className={ style.textContainer }>
-                        <div className={ style.header }>{ window.demo ? <a href={ loginLink } className={ style.headerLink }>DOWNLOAD</a> : 'GET STARTED'}</div>
-                        <p className={ style.infoText }>{ getStarted1 }<a href={ loginLink } style={{ color: 'red' }}>here</a>{ getStarted2 }</p>
-                    </div>
-                    <div className={ style.textContainer }>
-                        <div className={ style.header }>ABOUT</div>
-                        <p className={ style.infoText }>{ about }</p>
-                    </div>
+                <div className={style.textArea}>
+                    {window.developmentMode ? null :
+                        [
+                            <div className={style.textContainer}>
+                                <div className={style.header}>{'Account'}</div>
+                                <div className={style.horizontalLine}></div>
+                                <div className={style.loginButtonsContainer}>
+                                    {this.state.loggedIn ?
+                                        <GoogleLogout clientId={'34057223675-m245q453mcmhga710vc85asdfi9j74mg.apps.googleusercontent.com'}
+                                                      onLogoutSuccess={ this.onLogout }
+                                                      className={ style.loginButton }>
+                                            <div className={style.loginButtonContentContainer}>
+                                                <div className={style.loginButtonContent}>Logout</div>
+                                                <FontAwesomeIcon className={style.loginButtonIcon} icon={faArrowRightFromBracket} />
+                                            </div>
+                                        </GoogleLogout> :
+                                        <GoogleLogin
+                                            clientId={'634057223675-m245q453mcmhga710vc85asdfi9j74mg.apps.googleusercontent.com'}
+                                            className={style.loginButton}
+                                            onSuccess={this.onLogin}
+                                            onFailure={this.onLoginFailure}
+                                            cookiePolicy={'single_host_origin'}>
+                                            <div className={style.loginButtonContentContainer}>
+                                                <div className={style.loginButtonContent}>Login with Google</div>
+                                                <FontAwesomeIcon className={style.loginButtonIcon} icon={faArrowRightToBracket} />
+                                            </div>
+                                        </GoogleLogin>
+                                    }
+                                </div>
+                            </div>,
+                            <div className={style.textContainer}>
+                                <div className={style.header}>{'Download'}</div>
+                                <div className={style.horizontalLine}></div>
+                                <div className={style.downloadContainer}>
+                                    <div className={style.downloadOptionContainer}>
+                                        <div className={style.downloadText}>WINDOWS</div>
+                                        <button className={style.downloadButton}
+                                                onClick={() => this.download('windows')}>
+                                            <FontAwesomeIcon icon={faDownload}/>
+                                        </button>
+                                        <div className={style.downloadInfo}></div>
+                                    </div>
+                                    <div className={style.downloadOptionContainer}>
+                                        <div className={style.downloadText}>MAC</div>
+                                        <button className={style.downloadButton} onClick={() => this.download('mac')}>
+                                            <FontAwesomeIcon icon={faDownload}/>
+                                        </button>
+                                        <div className={style.downloadInfo}>( Unavailable )</div>
+                                    </div>
+                                    <div className={style.downloadOptionContainer}>
+                                        <div className={style.downloadText}>LINUX</div>
+                                        <button className={style.downloadButton} onClick={() => this.download('linux')}>
+                                            <FontAwesomeIcon icon={faDownload}/>
+                                        </button>
+                                        <div className={style.downloadInfo}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        ]
+                    }
                 </div>
             </div>
         );
@@ -148,7 +276,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = () => {
-    return{};
+    return {};
 }
 
 export default connect(mapStateToProps)(Home);

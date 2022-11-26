@@ -1,50 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>Lanstreamer</title>
-    <link rel="stylesheet" href="Electron.css" />
+    <link rel="stylesheet" href="Electron.css"/>
     <script defer src="Electron.js"></script>
-  </head>
-  <body>
+</head>
+<body>
+<div id="underApp">
+    <div class="margin"></div>
     <div id="app">
-      <div id="topContainer">
-        <button id="start" onclick=start()>Start</button>
-        <input
-          id="password"
-          oninput=setPassword()
-          placeholder="Set password ( optional )"
-          type="password"
-        ></input>
-      </div>
-      <div id="info"></div>
-      <div id="warningContainer">
-        <span id="warning"></span>
-      </div>
-    </div>
-    <div id="login">
-      <input class="loginInput" id="loginInput" placeholder="Login" />
-      <input class="loginInput" id="passwordInput" placeholder="Password" type="password" />
-      <button id="linkButton" onclick=createAccount()>Create an account</button>
-      <div id="bottomContainer">
-        <button id="backButton" onclick=home()>Home</button>
+        <div id="topContainer">
+            <button id="start" onclick=start()>Start</button>
+            <input
+                    id="password"
+                    oninput=setPassword()
+                    placeholder="Set password ( optional )"
+                    type="password"
+            />
+        </div>
+        <div id="info"></div>
+        <div id="warningContainer">
+            <span id="warning"></span>
+        </div>
+        <button id="linkButton" onclick=createAccount()>Open website</button>
         <div id="message">...</div>
-        <button id="confirmButton" onclick=confirm()>✓</button>
-      </div>
-      <button id="newVersionButton" onclick="showMigrationInfo()">How to migrate data to new version</button>
     </div>
-    <div id="migrationInfo">
-      <div class="infoContainer">
-        <div>1. Download the latest version of Lanstreamer.</div>
-        <div>2. Make a copy of the "resources/Files/Databases" folder</div>
-        <div class="infoSecondLine">in case of data loss.</div>
-        <div>3. In "resources/Files/" swap folders:</div>
-        <div class="infoSecondLine">"Videos", "Posters", "Previews", "Databases"</div>
-        <div class="infoSecondLine">from the old Lanstreamer version to the new one.</div>
-        <div>4. Run the new version of Lanstreamer.</div>
-      </div>
-      <button onclick="closeMigrationInfo()" id="infoGoBackButton">Go back</button>
-      <div>In case of any problems, contact support@lanstreamer.com.</div>
-    </div>
-  </body>
+    <div class="margin"></div>
+</div>
+</body>
 </html>

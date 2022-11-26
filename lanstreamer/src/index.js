@@ -8,7 +8,7 @@ import './index.scss';
 import './Animations.scss';
 
 window.developmentMode = false;
-window.demo = true;
+window.demo = false;
 
 // window.server = 'http://192.168.1.197:5555/';
 // window.localhost = 'http://192.168.1.197:5555/';
@@ -17,6 +17,7 @@ window.localhost = './';
 window.server = './';
 window.previewParts = 1;
 window.previewClipDuration = 9.5;
+window.googleClientId = '634057223675-m245q453mcmhga710vc85asdfi9j74mg.apps.googleusercontent.com';
 
 window.posterChangeTimeout = undefined;
 
