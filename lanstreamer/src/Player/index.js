@@ -70,7 +70,7 @@ class Player extends Component {
     }
 
     changeVideo = (name) => {
-        let link = window.webAddress + 'video/' + name;
+        let link = (window.demo ? window.server + 'demo/' : window.webAddress) + 'video/' + name;
         this.setState({ name: name, playing: false, visible: true });
         document.getElementById('player').setAttribute('src', link);
     }
@@ -249,7 +249,7 @@ class Player extends Component {
         document.getElementById('preview').style.left = `${move}px`;
         let duration = document.getElementById('player').duration;
         let num = Math.floor(progress / 10);
-        let posterLink = window.webAddress + 'preview/' + this.state.name + '/' + num;
+        let posterLink = (window.demo ? window.server + 'demo/' : window.webAddress) + 'preview/' + this.state.name + '/' + num;
         document.getElementById('previewPlayer').setAttribute('poster', posterLink);
         this.setState({ previewTime: this.convertTime(progress / 10000 * duration) });
     }
@@ -268,7 +268,7 @@ class Player extends Component {
             document.getElementById('preview').style.left = `${move}px`;
             let duration = document.getElementById('player').duration;
             let num = parseInt(progress.toFixed(3).substring(2));
-            let posterLink = window.webAddress + 'preview/' + this.state.name + '/' + num;
+            let posterLink = (window.demo ? window.server + 'demo/' : window.webAddress) + 'preview/' + this.state.name + '/' + num;
             document.getElementById('previewPlayer').setAttribute('poster', posterLink);
             this.setState({ previewTime: this.convertTime(progress * duration) });
         }

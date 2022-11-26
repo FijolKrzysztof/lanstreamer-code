@@ -10,11 +10,8 @@ import './Animations.scss';
 window.developmentMode = false;
 window.demo = false;
 
-// window.server = 'http://192.168.1.197:5555/';
-// window.localhost = 'http://192.168.1.197:5555/';
-
 window.localhost = './';
-window.server = './';
+window.server = 'https://lanstreamer.com/api/';
 window.previewParts = 1;
 window.previewClipDuration = 9.5;
 window.googleClientId = '634057223675-m245q453mcmhga710vc85asdfi9j74mg.apps.googleusercontent.com';

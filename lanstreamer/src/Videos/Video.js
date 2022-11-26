@@ -52,7 +52,7 @@ class Video extends Component {
         document.getElementById('video' + this.props.id).setAttribute('poster', null);
         setTimeout(() => {
             let name = this.props.VideoData.name;
-            let link = window.webAddress + 'poster/' + name;
+            let link = (window.demo ? window.server + 'demo/' : window.webAddress) + 'poster/' + name;
             document.getElementById('video' + this.props.id).setAttribute('poster', link);
         })
     }
@@ -96,7 +96,7 @@ class Video extends Component {
     }
 
     setVideo = () => {
-        let link = window.webAddress + 'video/' + this.props.VideoData.name;
+        let link = (window.demo ? window.server + 'demo/' : window.webAddress) + 'video/' + this.props.VideoData.name;
         document.getElementById('video' + this.props.id).setAttribute('src', link);
     }
 

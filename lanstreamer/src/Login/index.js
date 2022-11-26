@@ -12,7 +12,7 @@ class Login extends Component {
     }
 
     onLogin = () => {
-        axios.post(window.serverAddress + 'api/main/authorize', {AuthorizationString: this.href.substring(this.href.lastIndexOf('/') + 1)})
+        axios.post(window.server + 'api/main/authorize', {AuthorizationString: this.href.substring(this.href.lastIndexOf('/') + 1)})
             .then(() => {
                 document.getElementById('warningAlert').style.left = '0px';
                 document.getElementById('alertText').innerText = 'YOU CAN CLOSE BROWSER';

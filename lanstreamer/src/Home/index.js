@@ -105,7 +105,7 @@ class Home extends Component {
         document.getElementsByClassName(style.downloadButton)[1].disabled = true;
         document.getElementsByClassName(style.downloadButton)[2].disabled = true;
         document.body.style.cursor = 'wait';
-        axios.get(window.serverAddress + 'download/' + type, {responseType: 'blob'})
+        axios.get(window.server + 'main/download/' + type, {responseType: 'blob'})
             .then((file) => {
                 const link = document.createElement('a');
                 link.style.display = 'none';
@@ -153,7 +153,7 @@ class Home extends Component {
         document.getElementsByClassName(style.downloadButton)[1].disabled = true;
         document.getElementsByClassName(style.downloadButton)[2].disabled = true;
         document.body.style.cursor = 'wait';
-        axios.get(window.serverAddress + 'download/' + type, { responseType: 'blob' })
+        axios.get(window.server + 'main/download/' + type, { responseType: 'blob' })
             .then((file) => {
                 const link = document.createElement('a');
                 link.style.display = 'none';

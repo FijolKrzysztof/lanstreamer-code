@@ -12,6 +12,7 @@ import History from './History';
 import './App.scss';
 import cookie from 'js-cookie';
 import { gapi } from "gapi-script";
+import jsonData from './data.json'
 
 class App extends Component {
   componentDidMount = () => {
@@ -31,7 +32,7 @@ class App extends Component {
     if(playersNumber !== undefined) this.props.dispatch(Action('PLAYERS NUMBER UPDATE', playersNumber));
     if(previewParts !== undefined) window.previewParts = previewParts;
     if(previewClipDuration !== undefined) window.previewClipDuration = previewClipDuration;
-    this.getVideos(window.server);
+    this.getVideos(window.demo ? window.server : window.localhost);
   }
 
   getVideos = (address) => {
@@ -42,30 +43,43 @@ class App extends Component {
     this.props.dispatch(Action('VIDEO DATA CLEAR'));
     window.webAddress = address;
     cookie.set('webAddress', address, { expires: 1 });
-    axios.post(window.webAddress + 'data')
-    .then((message) => {
-      if(message.data.response === undefined){
-        let videos = message.data.videos;
-        let categories = message.data.categories;
-        for(let i = 0; i < videos.length; i ++){
-          this.props.dispatch(Action('VIDEO DATA ADD', videos[i]));
+    if (window.demo) {
+      let videos = jsonData.videos;
+      let categories = jsonData.categories;
+      for(let i = 0; i < videos.length; i ++){
+        this.props.dispatch(Action('VIDEO DATA ADD', videos[i]));
+      }
+      for(let i = 0; i < categories.length; i ++){
+        this.shuffle(categories[i].videos);
+        this.props.dispatch(Action('CATEGORY DATA ADD', { name: categories[i].name, videos: categories[i].videos }));
+      }
+      this.loading('hide');
+    } else {
+      axios.post(window.webAddress + 'data')
+      .then((message) => {
+        if(message.data.response === undefined){
+          let videos = message.data.videos;
+          let categories = message.data.categories;
+          for(let i = 0; i < videos.length; i ++){
+            this.props.dispatch(Action('VIDEO DATA ADD', videos[i]));
+          }
+          for(let i = 0; i < categories.length; i ++){
+            this.shuffle(categories[i].videos);
+            this.props.dispatch(Action('CATEGORY DATA ADD', { name: categories[i].name, videos: categories[i].videos }));
+          }
+          this.loading('hide');
+        } else {
+          this.loading('hide');
+          document.getElementById('warningAlert').style.left = '0px';
+          document.getElementById('alertText').innerText = message.data.response;
         }
-        for(let i = 0; i < categories.length; i ++){
-          this.shuffle(categories[i].videos);
-          this.props.dispatch(Action('CATEGORY DATA ADD', { name: categories[i].name, videos: categories[i].videos }));
-        }
-        this.loading('hide');
-      } else {
+      })
+      .catch(() => {
         this.loading('hide');
         document.getElementById('warningAlert').style.left = '0px';
-        document.getElementById('alertText').innerText = message.data.response;
-      }
-    })
-    .catch(() => {
-      this.loading('hide');
-      document.getElementById('warningAlert').style.left = '0px';
-      document.getElementById('alertText').innerText = 'SERVER CONNECTION ERROR';
-    })
+        document.getElementById('alertText').innerText = 'SERVER CONNECTION ERROR';
+      })
+    }
   }
 
   shuffle(array){
@@ -94,7 +108,7 @@ class App extends Component {
   closeAlert = () => {
     document.getElementById('warningAlert').style.left = '-415px';
   }
-  
+
   render(){
     return(
       <div>
@@ -120,5 +134,5 @@ class App extends Component {
 }
 
 const mapStateToProps = () => { return{} }
- 
+
 export default connect(mapStateToProps)(App);
