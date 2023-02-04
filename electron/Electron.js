@@ -107,6 +107,7 @@ function start(){
         }, 1000)
         setTimeout(() => {
             clearInterval(interval);
+            animateText('Login failed! Try again.');
         }, 60000)
     }
 }

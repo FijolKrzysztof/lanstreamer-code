@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
+import { faHandPointLeft } from '@fortawesome/fontawesome-free-solid';
 import style from './index.module.scss';
 import History from '../History';
 import { connect } from 'react-redux';

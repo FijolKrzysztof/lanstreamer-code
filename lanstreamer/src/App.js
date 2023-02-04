@@ -76,8 +76,8 @@ class App extends Component {
       })
       .catch(() => {
         this.loading('hide');
-        document.getElementById('warningAlert').style.left = '0px';
-        document.getElementById('alertText').innerText = 'SERVER CONNECTION ERROR';
+        // document.getElementById('warningAlert').style.left = '0px';
+        // document.getElementById('alertText').innerText = 'SERVER CONNECTION ERROR';
       })
     }
   }

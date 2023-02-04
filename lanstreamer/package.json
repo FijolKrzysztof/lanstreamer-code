@@ -3,24 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^6.2.0",
-    "@fortawesome/react-fontawesome": "^0.1.14",
-    "axios": "^0.21.1",
+    "@fortawesome/fontawesome-free-solid": "5.0.13",
+    "@fortawesome/fontawesome-svg-core": "6.2.1",
+    "@fortawesome/free-solid-svg-icons": "6.2.0",
+    "@fortawesome/react-fontawesome": "0.1.14",
+    "axios": "^0.21.4",
     "gapi-script": "^1.2.0",
     "history": "^4.10.1",
     "js-cookie": "^2.2.1",
-    "react": "^17.0.2",
+    "react": "17.0.2",
     "react-addons-update": "^15.6.3",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
     "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.1.0",
-    "sass": "^1.49.9"
+    "react-router-dom": "5.2.0",
+    "redux": "4.1.0",
+    "sass": "1.49.9"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build-lanstreamer-electron": "react-scripts build && rm -r ../electron/build && mv build ../electron/",
+    "build-lanstreamer-electron": "react-scripts build && rm -rf ../electron/build && mv build ../electron/",
     "build-lanstreamer-demo": "react-scripts build"
   },
   "eslintConfig": {
@@ -42,6 +44,6 @@
     ]
   },
   "devDependencies": {
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^5.0.1"
   }
 }

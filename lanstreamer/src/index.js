@@ -8,10 +8,12 @@ import './index.scss';
 import './Animations.scss';
 
 window.developmentMode = false;
-window.demo = false;
+window.demo = true;
 
+window.whatIsLanstreamer = 'https://lanstreamer.com/blog/what-is-lanstreamer';
 window.localhost = './';
-window.server = 'https://lanstreamer.com/api/';
+window.server = 'http://18.134.137.150:5000/api/';
+// window.server = 'https://localhost:7081/api/';
 window.previewParts = 1;
 window.previewClipDuration = 9.5;
 window.googleClientId = '634057223675-m245q453mcmhga710vc85asdfi9j74mg.apps.googleusercontent.com';

@@ -4,7 +4,7 @@ import style from './index.module.scss';
 import { Action } from '../Store';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronCircleLeft, faChevronCircleRight, faHome, faSortAmountDownAlt, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faChevronCircleLeft, faChevronCircleRight, faHome, faSortAmountDown, faCog } from '@fortawesome/fontawesome-free-solid';
 import History from '../History';
 
 class Videos extends Component {
@@ -321,7 +321,7 @@ class Videos extends Component {
                         <FontAwesomeIcon icon={ faCog } />
                     </button>
                     <button className={ style.sortButton } onFocus={ this.displaySort } onBlur={ this.hideSort }>
-                        <FontAwesomeIcon icon={ faSortAmountDownAlt } />
+                        <FontAwesomeIcon icon={ faSortAmountDown } />
                     </button>
                     { this.state.sortMenu === true ?
                         <div className={ style.sortMenu } onMouseEnter={ this.overSortMenu } onMouseLeave={ this.leftSortMenu }>

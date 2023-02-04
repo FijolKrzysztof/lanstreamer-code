@@ -6,9 +6,9 @@ import {
     faVideo,
     faCheck,
     faDownload,
-    faArrowRightToBracket,
-    faArrowRightFromBracket
-} from '@fortawesome/free-solid-svg-icons';
+    faArrowRight,
+    faArrowLeft
+} from '@fortawesome/fontawesome-free-solid';
 import History from '../History';
 import axios from 'axios';
 import { Action } from '../Store';
@@ -31,18 +31,8 @@ class Home extends Component {
         this.props.dispatch(Action('CURRENT PAGE UPDATE', 0));
     }
 
-    demo = () => {
-        this.clearRedux();
-        if (window.demo === true) {
-            let address = window.server;
-            this.props.dispatch(Action('PLAYERS NUMBER UPDATE', 3));
-            window.previewParts = 1;
-            window.previewClipDuration = 20;
-            History.push('/videos');
-            this.props.getVideos(address);
-        } else {
-            document.getElementById('account').scrollIntoView({behavior: 'smooth', block: 'center'});
-        }
+    about = () => {
+        window.open(window.whatIsLanstreamer, '_blank');
     }
 
     checkConnection = () => {
@@ -100,39 +90,6 @@ class Home extends Component {
         }
     }
 
-    downlaod = (type) => {
-        document.getElementsByClassName(style.downloadButton)[0].disabled = true;
-        document.getElementsByClassName(style.downloadButton)[1].disabled = true;
-        document.getElementsByClassName(style.downloadButton)[2].disabled = true;
-        document.body.style.cursor = 'wait';
-        axios.get(window.server + 'main/download/' + type, {responseType: 'blob'})
-            .then((file) => {
-                const link = document.createElement('a');
-                link.style.display = 'none';
-                link.href = URL.createObjectURL(new File([file.data], '.zip', {type: 'application/zip'}));
-                link.download = 'lanstreamer';
-
-                document.body.appendChild(link);
-                link.click();
-
-                document.body.style.cursor = 'auto';
-                document.getElementsByClassName(style.downloadButton)[0].disabled = false;
-                document.getElementsByClassName(style.downloadButton)[1].disabled = false;
-                document.getElementsByClassName(style.downloadButton)[2].disabled = false;
-
-                setTimeout(() => {
-                    URL.revokeObjectURL(link.href);
-                    link.parentNode.removeChild(link);
-                });
-            })
-            .catch(() => {
-                document.body.style.cursor = 'auto';
-                document.getElementsByClassName(style.downloadButton)[0].disabled = false;
-                document.getElementsByClassName(style.downloadButton)[1].disabled = false;
-                document.getElementsByClassName(style.downloadButton)[2].disabled = false;
-            })
-    }
-
     onLogin = (res) => {
         this.setState({loggedIn: true})
         console.log(res.profileObj)
@@ -153,13 +110,10 @@ class Home extends Component {
         document.getElementsByClassName(style.downloadButton)[1].disabled = true;
         document.getElementsByClassName(style.downloadButton)[2].disabled = true;
         document.body.style.cursor = 'wait';
-        axios.get(window.server + 'main/download/' + type, { responseType: 'blob' })
-            .then((file) => {
+        axios.get(window.server + 'main/download/' + type, { responseType: 'text' })
+            .then((response) => {
                 const link = document.createElement('a');
-                link.style.display = 'none';
-                link.href = URL.createObjectURL(new File([file.data], '.zip', { type: 'application/zip' }));
-                link.download = 'lanstreamer';
-
+                link.href = response.data;
                 document.body.appendChild(link);
                 link.click();
 
@@ -169,8 +123,7 @@ class Home extends Component {
                 document.getElementsByClassName(style.downloadButton)[2].disabled = false;
 
                 setTimeout(() => {
-                    URL.revokeObjectURL(link.href);
-                    link.parentNode.removeChild(link);
+                    document.body.removeChild(link);
                 });
             })
             .catch(() => {
@@ -203,17 +156,17 @@ class Home extends Component {
                     </div>
                     <div className={style.text}>Sort, preview and play your offline videos</div>
                     <div className={style.buttonContainer}>
-                        <button className={style.button} onClick={this.demo}>DEMO</button>
+                        <button className={style.button} onClick={this.about}>ABOUT</button>
                         <div className={style.margin}></div>
                         <button className={style.button}
-                                onClick={this.checkConnection}>{window.demo ? 'DOWNLOAD' : 'GET STARTED'}</button>
+                                onClick={this.checkConnection}>{'GET STARTED'}</button>
                     </div>
                 </div>
                 <div className={style.textArea}>
                     {window.developmentMode ? null :
                         [
                             <div className={style.textContainer}>
-                                <div className={style.header}>{'Account'}</div>
+                                <div id={'account'} className={style.header}>{'Account'}</div>
                                 <div className={style.horizontalLine}></div>
                                 <div className={style.loginButtonsContainer}>
                                     {this.state.loggedIn ?
@@ -222,7 +175,7 @@ class Home extends Component {
                                                       className={ style.loginButton }>
                                             <div className={style.loginButtonContentContainer}>
                                                 <div className={style.loginButtonContent}>Logout</div>
-                                                <FontAwesomeIcon className={style.loginButtonIcon} icon={faArrowRightFromBracket} />
+                                                <FontAwesomeIcon className={style.loginButtonIcon} icon={faArrowRight} />
                                             </div>
                                         </GoogleLogout> :
                                         <GoogleLogin
@@ -233,14 +186,14 @@ class Home extends Component {
                                             cookiePolicy={'single_host_origin'}>
                                             <div className={style.loginButtonContentContainer}>
                                                 <div className={style.loginButtonContent}>Login with Google</div>
-                                                <FontAwesomeIcon className={style.loginButtonIcon} icon={faArrowRightToBracket} />
+                                                <FontAwesomeIcon className={style.loginButtonIcon} icon={faArrowLeft} />
                                             </div>
                                         </GoogleLogin>
                                     }
                                 </div>
                             </div>,
                             <div className={style.textContainer}>
-                                <div className={style.header}>{'Download'}</div>
+                                <div id={'download'} className={style.header}>{'Download'}</div>
                                 <div className={style.horizontalLine}></div>
                                 <div className={style.downloadContainer}>
                                     <div className={style.downloadOptionContainer}>

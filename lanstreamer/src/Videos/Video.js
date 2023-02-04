@@ -4,7 +4,7 @@ import {Action} from '../Store';
 import {connect} from 'react-redux';
 import style from './Video.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faChartBar, faPen, faStar} from '@fortawesome/free-solid-svg-icons';
+import {faChartBar, faPencilAlt, faStar} from '@fortawesome/fontawesome-free-solid';
 
 class Video extends Component {
     constructor(props) {
@@ -389,7 +389,7 @@ class Video extends Component {
                             <div className={style.faButtonsContainer}>
                                 <button className={style.renameButtonBefore} id={'renameButton' + this.props.id}
                                         onClick={this.showHideRename}>
-                                    <FontAwesomeIcon icon={faPen} style={{ pointerEvents: 'none' }}/>
+                                    <FontAwesomeIcon icon={faPencilAlt} style={{ pointerEvents: 'none' }}/>
                                 </button>
                                 <button className={style.rateButton} onFocus={this.showRate} onBlur={this.hideRate}>
                                     <FontAwesomeIcon icon={faStar}/>

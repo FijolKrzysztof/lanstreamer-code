@@ -11,17 +11,17 @@ import {
     faTrash,
     faArrowLeft,
     faExpandArrowsAlt,
-    faCompressArrowsAlt,
+    faCompress,
     faVolumeUp,
     faVolumeDown,
-    faVolumeMute,
+    faVolumeOff,
     faPlay,
     faPause,
     faAngleUp,
     faAngleDown,
     faFastBackward,
     faFastForward
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/fontawesome-free-solid';
 import History from '../History';
 import axios from 'axios';
 
@@ -605,13 +605,13 @@ class Player extends Component {
                                             <FontAwesomeIcon icon={ faVolumeUp } /> :
                                             this.props.Volume !== 0 ?
                                             <FontAwesomeIcon icon={ faVolumeDown } /> :
-                                            <FontAwesomeIcon icon={ faVolumeMute } />
+                                            <FontAwesomeIcon icon={ faVolumeOff } />
                                         }
                                     </button>
                                     <button className={ style.controlsButton } onClick={ this.fullScreen }>
                                         { this.state.fullScreen === false ? 
                                             <FontAwesomeIcon icon={ faExpandArrowsAlt } /> :
-                                            <FontAwesomeIcon icon={ faCompressArrowsAlt } />
+                                            <FontAwesomeIcon icon={ faCompress } />
                                         }
                                     </button>
                                 </div>
