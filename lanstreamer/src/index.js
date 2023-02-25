@@ -12,7 +12,7 @@ window.demo = true;
 
 window.whatIsLanstreamer = 'https://lanstreamer.com/blog/what-is-lanstreamer';
 window.localhost = './';
-window.server = 'http://18.134.137.150:5000/api/';
+window.server = 'http://lanstreamer.com:5000/api/';
 // window.server = 'https://localhost:7081/api/';
 window.previewParts = 1;
 window.previewClipDuration = 9.5;

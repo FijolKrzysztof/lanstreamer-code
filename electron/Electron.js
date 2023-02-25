@@ -9,7 +9,7 @@ const os = require('os');
 let version = '1';
 let port = 5555;
 let website = 'https://lanstreamer.com/';
-let serverAddress = 'https://lanstreamer.com/api/';
+let serverAddress = 'http://lanstreamer.com:5000/api/';
 
 let fullInfo = `Open the program on another device:\n
 1. Start Lanstreamer.
@@ -87,7 +87,7 @@ function start(){
         })
     } else {
         const urlId = Math.floor(1000000000 + Math.random() * 9000000000);
-        open(website + 'google-authentication/' + urlId);
+        open(website + 'authentication/' + urlId);
         const interval = setInterval(() => {
             axios.get(serverAddress + '/main/app/access/' + urlId + '/' + version)
                 .then(response => {
