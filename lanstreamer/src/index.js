@@ -8,9 +8,9 @@ import './index.scss';
 import './Animations.scss';
 
 window.developmentMode = false;
-window.demo = true;
+window.demo = false;
 
-window.whatIsLanstreamer = 'https://lanstreamer.com/blog/what-is-lanstreamer';
+window.whatIsLanstreamer = 'https://lanstreamer.com';
 window.localhost = './';
 window.server = 'https://lanstreamer.com:5000/api/';
 // window.server = 'https://localhost:7081/api/';

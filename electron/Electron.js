@@ -5,17 +5,19 @@ const { ipcRenderer } = require('electron');
 const axios = require('axios');
 const { machineId } = require('node-machine-id');
 const os = require('os');
+const https = require('https')
 
 let version = '1';
 let port = 5555;
-let website = 'https://lanstreamer.com/';
-let serverAddress = 'http://lanstreamer.com:5000/api/';
+let website = 'https://lanstreamer.com:4000/';
+// let serverAddress = 'http://localhost:5150/api/'
+let serverAddress = 'https://lanstreamer.com:5000/api/';
 
 let fullInfo = `Open the program on another device:\n
 1. Start Lanstreamer.
 2. Connect the device to the same network.
 3. Open the device browser.
-4. Go to: "${ip.address()}:${port}".`
+4. Paste url: "${ip.address()}:${port}".`
 
 let timeout;
 
@@ -78,6 +80,31 @@ for(let i = 0; i < 50; i++){
     document.getElementsByClassName('margin')[1].innerText += '.|..|..|..|..|.';
 }
 
+function getAccess(url, index) {
+    axios.get(url, {httpsAgent: new https.Agent({rejectUnauthorized: false})})
+        .then(response => {
+            if (+response?.data) {
+                localStorage.offline = +response.data;
+                ipcRenderer.send('open');
+                setTimeout(() => {
+                    open('http://localhost:' + port);
+                    animateText('Logged in!')
+                })
+            } else {
+                animateText('Cannot login!')
+            }
+        })
+        .catch((error) => {
+            if (index < 60) {
+                setTimeout(() => {
+                    getAccess(url, index++)
+                }, 1000)
+            } else {
+                animateText(error?.message ?? 'Cannot login!');
+            }
+        })
+}
+
 function start(){
     if(localStorage.offline > 0){
         localStorage.offline --;
@@ -86,29 +113,12 @@ function start(){
             open('http://localhost:' + port);
         })
     } else {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
         const urlId = Math.floor(1000000000 + Math.random() * 9000000000);
         open(website + 'authentication/' + urlId);
-        const interval = setInterval(() => {
-            axios.get(serverAddress + '/main/app/access/' + urlId + '/' + version)
-                .then(response => {
-                    if (+response) {
-                        animateText('Logged in!')
-                        localStorage.offline = +response;
-                        ipcRenderer.send('open');
-                        setTimeout(() => {
-                            open('http://localhost:' + port);
-                        })
-                        clearInterval(interval);
-                    } else {
-                        animateText('Cannot login!')
-                    }
-                })
-                .catch((error) => animateText(error?.message ?? 'Server error!'))
-        }, 1000)
-        setTimeout(() => {
-            clearInterval(interval);
-            animateText('Login failed! Try again.');
-        }, 60000)
+
+        getAccess(serverAddress + 'main/app/access/' + urlId + '/' + version, 0)
     }
 }
 
