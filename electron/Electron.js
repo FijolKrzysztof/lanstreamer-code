@@ -105,20 +105,23 @@ function getAccess(url, index) {
         })
 }
 
-function start(){
-    if(localStorage.offline > 0){
-        localStorage.offline --;
-        ipcRenderer.send('open');
-        setTimeout(() => {
-            open('http://localhost:' + port);
-        })
-    } else {
+async function start(){
+    const isConnected = !!await require('dns').promises.resolve('google.com').catch(()=>{});
+    if (isConnected) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
         const urlId = Math.floor(1000000000 + Math.random() * 9000000000);
         open(website + 'authentication/' + urlId);
 
         getAccess(serverAddress + 'main/app/access/' + urlId + '/' + version, 0)
+    } else if (localStorage.offline > 0) {
+        localStorage.offline --;
+        ipcRenderer.send('open');
+        setTimeout(() => {
+            open('http://localhost:' + port);
+        })
+    } else {
+        animateText('Cannot login! No internet connection')
     }
 }
 
