@@ -9,7 +9,7 @@ const https = require('https')
 
 let version = '1';
 let port = 5555;
-let website = 'https://lanstreamer.com:4000/';
+let website = 'https://lanstreamer.com/';
 // let serverAddress = 'http://localhost:5150/api/'
 let serverAddress = 'https://lanstreamer.com:5000/api/';
 
