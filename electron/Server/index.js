@@ -81,7 +81,7 @@ app.get('/createPreview/:name', async(req,res) => {
         setTimeout(() => {
             res.end();
         }, 500);
-    } 
+    }
 })
 
 app.post('/data', async(req,res) => {

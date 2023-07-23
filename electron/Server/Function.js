@@ -179,21 +179,22 @@ module.exports.createPreview = (name, res) => {
             let duration = metadata.format.duration;
             let timestamp = duration / noOfFrames;
             ffmpeg(path)
-            .on('end', function(){
-                res.end();
-                resolve();
-            })
-            .on('progress', function(progress){
-                let percent = (progress.percent.toFixed(0).toString()) + '%';
-                res.write(percent.toString());
-            })
-            .output(global.mainPath + 'Previews/' + name + '/scr-%04d.jpg')
-            .outputOptions(
-                '-frames', noOfFrames,
-                '-vf', 'fps=1/' + timestamp,
-                '-q:v', '31',
-            )
-            .run()
+                .on('end', function () {
+                    res.end();
+                    resolve();
+                })
+                .on('progress', function (progress) {
+                    let percent = (progress.percent.toFixed(0).toString()) + '%';
+                    res.write(percent.toString());
+                })
+                .output(global.mainPath + 'Previews/' + name + '/scr-%04d.jpg')
+                .outputOptions(
+                    '-frames', noOfFrames,
+                    '-vf', 'fps=1/' + timestamp,
+                    '-q:v', '31',
+                    '-vcodec', 'png',
+                )
+                .run()
         });
     })
 }
