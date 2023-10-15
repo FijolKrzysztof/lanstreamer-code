@@ -12,6 +12,7 @@ window.demo = false;
 
 window.whatIsLanstreamer = 'https://lanstreamer.com';
 window.localhost = './';
+// window.localhost = 'http://localhost:5555/'
 window.server = 'https://lanstreamer.com:5000/api/';
 // window.server = 'https://localhost:7081/api/';
 window.previewParts = 1;

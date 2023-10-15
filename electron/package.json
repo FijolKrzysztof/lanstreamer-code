@@ -7,8 +7,8 @@
     "nodemon": "nodemon Server/index.js",
     "electron": "electron .",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=../lanstreamer-packages --extra-resource='./Server/Files'",
-    "package-win": "mkdir ../temp && mv ./Server/Files/Ffmpeg/Linux ../temp/Linux && electron-packager . lanstreamer --overwrite --asar --platform=win32 --arch=ia32 --prune=true --out=../lanstreamer-packages --extra-resource='./Server/Files' --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Lanstreamer\" --icon='./Server/Files/Icons/icon.ico' && mv ../temp/Linux ./Server/Files/Ffmpeg/Linux && rm -r ../temp",
-    "package-linux": "rm -rf ../lanstreamer-packages/lanstreamer-linux-x64 && mkdir ../temp && mv ./Server/Files/Ffmpeg/Windows ../temp/Windows && electron-packager . lanstreamer --overwrite --asar --platform=linux --prune=true --out=../lanstreamer-packages --extra-resource='./Server/Files' && mv ../temp/Windows ./Server/Files/Ffmpeg/Windows && rm -r ../temp"
+    "package-win": "package/package-windows.sh",
+    "package-linux": "package/package-linux.sh"
   },
   "author": "",
   "license": "ISC",

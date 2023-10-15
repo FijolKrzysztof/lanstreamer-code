@@ -1,0 +1,19 @@
+name: lanstreamer
+version: '1.0'
+summary: video player and organizer
+description: Organise and view films. Create thumbnails, preview videos. Preview the video from a specific second by hovering the mouse over the video progress bar. See random frames from the video on hover.
+
+base: core18
+confinement: strict
+
+apps:
+  lanstreamer:
+    command: ./lanstreamer
+
+plugs:
+  dostep-do-folderu:
+    interface: personal-files
+    read:
+      - /ścieżka-do-folderu
+    write:
+      - /ścieżka-do-folderu
