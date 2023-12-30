@@ -9,9 +9,9 @@ const https = require('https')
 
 let version = '1';
 let port = 5555;
-let website = 'https://lanstreamer.com/';
-// let serverAddress = 'http://localhost:5150/api/'
-let serverAddress = 'https://lanstreamer.com:5000/api/';
+let website = 'https://lanstreamer.com';
+// let serverAddress = 'http://localhost:5000'
+let serverAddress = 'https://lanstreamer.com:5000';
 
 let fullInfo = `Open the program on another device:\n
 1. Start Lanstreamer.
@@ -80,29 +80,51 @@ for(let i = 0; i < 50; i++){
     document.getElementsByClassName('margin')[1].innerText += '.|..|..|..|..|.';
 }
 
-function getAccess(url, index) {
-    axios.get(url, {httpsAgent: new https.Agent({rejectUnauthorized: false})})
+function getAccess(url) {
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'text/event-stream'
+        },
+    })
         .then(response => {
-            if (+response?.data) {
-                localStorage.offline = +response.data;
-                ipcRenderer.send('open');
-                setTimeout(() => {
-                    open('http://localhost:' + port);
-                    animateText('Logged in!')
-                })
-            } else {
-                animateText('Cannot login!')
+            if (!response.ok) {
+                response.json().then(error => {
+                    if (localStorage.offline > 0) {
+                        localStorage.offline --;
+                        launchApplication();
+                    } else {
+                        animateText(error?.message ?? 'Cannot login!');
+                    }
+                });
+                return;
             }
+            response.text().then(data => {
+                if (!!data) {
+                    localStorage.offline = +data;
+                    ipcRenderer.send('open');
+                    setTimeout(() => {
+                        open('http://localhost:' + port);
+                        animateText('Logged in!');
+                    })
+                } else {
+                    if (localStorage.offline > 0) {
+                        localStorage.offline --;
+                        launchApplication();
+                    } else {
+                        animateText('Cannot login!');
+                    }
+                }
+            })
         })
-        .catch((error) => {
-            if (index < 60) {
-                setTimeout(() => {
-                    getAccess(url, index++)
-                }, 1000)
-            } else {
-                animateText(error?.message ?? 'Cannot login!');
-            }
-        })
+}
+
+function launchApplication() {
+    ipcRenderer.send('open');
+    setTimeout(() => {
+        open('http://localhost:' + port);
+        animateText('Logged in!')
+    })
 }
 
 async function start(){
@@ -111,15 +133,12 @@ async function start(){
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
         const urlId = Math.floor(1000000000 + Math.random() * 9000000000);
-        open(website + 'authentication/' + urlId);
+        open(website + '/authentication/' + urlId);
 
-        getAccess(serverAddress + 'main/app/access/' + urlId + '/' + version, 0)
+        getAccess(serverAddress + '/api/desktop-app/access?accessCode=' + urlId + '&version=' + version)
     } else if (localStorage.offline > 0) {
         localStorage.offline --;
-        ipcRenderer.send('open');
-        setTimeout(() => {
-            open('http://localhost:' + port);
-        })
+        launchApplication();
     } else {
         animateText('Cannot login! No internet connection')
     }
