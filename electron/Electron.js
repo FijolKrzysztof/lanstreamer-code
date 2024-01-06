@@ -26,6 +26,7 @@ document.getElementById('info').innerText = fullInfo;
 let path;
 let messagePath;
 let message;
+let connectionError = false;
 
 ipcRenderer.send('port', port);
 
@@ -89,6 +90,8 @@ function getAccess(url) {
     })
         .then(response => {
             if (!response.ok) {
+                connectionError = true;
+                console.log('connection error')
                 response.json().then(error => {
                     if (localStorage.offline > 0) {
                         localStorage.offline --;
@@ -117,6 +120,15 @@ function getAccess(url) {
                 }
             })
         })
+        .catch(() => {
+            connectionError = true;
+            if (localStorage.offline > 0) {
+                localStorage.offline --;
+                launchApplication();
+            } else {
+                animateText('Cannot login! Server is not responding');
+            }
+        })
 }
 
 function launchApplication() {
@@ -133,9 +145,14 @@ async function start(){
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
         const urlId = Math.floor(1000000000 + Math.random() * 9000000000);
-        open(website + '/authentication/' + urlId);
 
+        connectionError = false;
         getAccess(serverAddress + '/api/desktop-app/access?accessCode=' + urlId + '&version=' + version)
+        setTimeout(() => {
+            if (!connectionError) {
+                open(website + '/authentication/' + urlId);
+            }
+        }, 100)
     } else if (localStorage.offline > 0) {
         localStorage.offline --;
         launchApplication();
