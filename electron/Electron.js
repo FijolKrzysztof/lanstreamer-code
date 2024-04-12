@@ -140,25 +140,26 @@ function launchApplication() {
 }
 
 async function start(){
-    const isConnected = !!await require('dns').promises.resolve('google.com').catch(()=>{});
-    if (isConnected) {
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
-        const urlId = Math.floor(1000000000 + Math.random() * 9000000000);
-
-        connectionError = false;
-        getAccess(serverAddress + '/api/desktop-app/access?accessCode=' + urlId + '&version=' + version)
-        setTimeout(() => {
-            if (!connectionError) {
-                open(website + '/authentication/' + urlId);
-            }
-        }, 100)
-    } else if (localStorage.offline > 0) {
-        localStorage.offline --;
-        launchApplication();
-    } else {
-        animateText('Cannot login! No internet connection')
-    }
+    // const isConnected = !!await require('dns').promises.resolve('google.com').catch(()=>{});
+    // if (isConnected) {
+    //     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    //
+    //     const urlId = Math.floor(1000000000 + Math.random() * 9000000000);
+    //
+    //     connectionError = false;
+    //     getAccess(serverAddress + '/api/desktop-app/access?accessCode=' + urlId + '&version=' + version)
+    //     setTimeout(() => {
+    //         if (!connectionError) {
+    //             open(website + '/authentication/' + urlId);
+    //         }
+    //     }, 100)
+    // } else if (localStorage.offline > 0) {
+    //     localStorage.offline --;
+    //     launchApplication();
+    // } else {
+    //     animateText('Cannot login! No internet connection')
+    // }
+    launchApplication();
 }
 
 function setPassword(){
